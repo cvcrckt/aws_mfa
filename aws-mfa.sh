@@ -2,14 +2,6 @@
 
 # log in with MFA
 
-# usage:
-#
-# eval "$(aws-mfa [-p|--profile <aws_profile>] <-c token_code> <login|logout>)"
-
-# todo: multi-profile support
-# todo: login / logout actions
-# todo: error checking
-
 #############################
 # GLOBALS
 #############################
