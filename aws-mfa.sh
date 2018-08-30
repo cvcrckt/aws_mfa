@@ -33,9 +33,30 @@ die() {
 }
 
 usage() {
-  echo
-  echo "To login: eval \"\$($aws_mfa_cmd [-p|--profile <aws_profile>] <-c token_code>)\""
-  echo "To logout: eval \"\$($aws_mfa_cmd logout)\""
+  fold -s -w $(tput cols) <<EOT
+
+==Usage==
+
+To "login" (i.e. to export aws access env vars):
+
+  eval "\$($aws_mfa_cmd [-p|--profile <aws_profile>] <-c token_code>)"
+
+To "logout" (i.e. to unset aws access env vars):
+
+  eval "\$($aws_mfa_cmd logout)"
+
+You will need to save your MFA device's serial number in ${mfa_file}.  Profiles in ${mfa_file} are defined, similar to the config and credentials files.  Once you "login" with ${aws_mfa_cmd}, you don't need to specify --profile for other aws commands; the profile is implied by the credentials loaded in memory.
+
+==Example contents of ${mfa_file}==
+
+[default]
+SN_OR_ARN_OF_MFA_DEVICE_FROM_default_PROFILE_ACCOUNT
+[profile2]
+SN_OR_ARN_OF_MFA_DEVICE_FROM_profile2_PROFILE_ACCOUNT
+[profile3]
+SN_OR_ARN_OF_MFA_DEVICE_FROM_profile3_PROFILE_ACCOUNT
+
+EOT
 }
 
 load_mfa_serial() {
@@ -54,7 +75,7 @@ parse_args() {
         -p|--profile)   expected_arg='profile';;
         -c|--code)      expected_arg='token_code';;
         login|logout)   action=$arg;;
-        *)              die "Invalid argument $arg";;
+        *)              die "Invalid argument \"$arg\"";;
       esac
     else  # else expected_arg is defined
       case $expected_arg in
