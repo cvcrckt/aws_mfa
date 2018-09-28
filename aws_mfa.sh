@@ -37,6 +37,8 @@ To "logout" (i.e. to unset aws access env vars):
 
   eval "\$($aws_mfa_cmd logout)"
 
+IMPORTANT: 'logout' merely unsets the aws access env vars.  It does not invalidate the credentials.  Any other copy of them could be used for access until they expire!
+
 You will need to save your MFA device's serial number in ${mfa_file}.  Profiles in ${mfa_file} are defined, similar to the config and credentials files.  Once you "login" with ${aws_mfa_cmd}, you don't need to specify --profile for other aws commands; the profile is implied by the credentials loaded in memory.
 
 ==Example contents of ${mfa_file}==
